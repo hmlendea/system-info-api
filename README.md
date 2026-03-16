@@ -199,16 +199,10 @@ dotnet build
 
 ### Publish the Project
 
-```bash
-dotnet publish -c Release
-```
-
-## Deployment
-
 The repository includes a helper script:
 
 ```bash
-./release.sh
+./release.sh 1.2.3
 ```
 
 The script downloads and executes an external deployment script for .NET 10 releases.
