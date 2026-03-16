@@ -17,6 +17,6 @@ namespace SystemInfoApi.Api.Responses
 
         [HmacOrder(3)]
         [JsonProperty("region")]
-        public RegionInfoApiObject RegionInfo { get; set; }
+        public RegionalInfoApiObject RegionalInfo { get; set; }
     }
 }

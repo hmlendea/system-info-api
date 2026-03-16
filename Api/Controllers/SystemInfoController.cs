@@ -24,7 +24,7 @@ namespace SystemInfoApi.Api.Controllers
                     {
                         SystemInfo = service.GetSystemInfo().ToApiObject(),
                         NetworkInfo = service.GetNetworkInfo().ToApiObject(),
-                        RegionInfo = service.GetRegionInfo().ToApiObject()
+                        RegionalInfo = service.GetRegionalInfo().ToApiObject()
                     };
 
                     response.SignHMAC(securitySettings.HmacSigningKey);

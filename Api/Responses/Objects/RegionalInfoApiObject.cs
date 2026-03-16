@@ -3,7 +3,7 @@ using NuciSecurity.HMAC;
 
 namespace SystemInfoApi.Api.Responses.Objects
 {
-    public class RegionInfoApiObject
+    public class RegionalInfoApiObject
     {
         [HmacOrder(1)]
         [JsonProperty("system_time")]
