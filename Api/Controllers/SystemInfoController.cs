@@ -22,7 +22,9 @@ namespace SystemInfoApi.Api.Controllers
                 {
                     GetSystemInfoResponse response = new()
                     {
-                        SystemInfo = service.GetSystemInfo().ToApiObject()
+                        SystemInfo = service.GetSystemInfo().ToApiObject(),
+                        NetworkInfo = service.GetNetworkInfo().ToApiObject(),
+                        RegionInfo = service.GetRegionInfo().ToApiObject()
                     };
 
                     response.SignHMAC(securitySettings.HmacSigningKey);

@@ -1,7 +1,9 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using NuciLog.Core;
+using NuciWeb.HTTP;
 using SystemInfoApi.Logging;
 using SystemInfoApi.Service.Models;
 
@@ -19,19 +21,12 @@ namespace SystemInfoApi.Service
             {
                 OperatingSystem = GetOperatingSystemName(),
                 Kernel = GetKernelVersion(),
-                Architecture = RuntimeInformation.OSArchitecture switch
-                {
-                    Architecture.X64 => "x64",
-                    Architecture.X86 => "x86",
-                    Architecture.Arm64 => "arm64",
-                    Architecture.Arm => "arm",
-                    _ => RuntimeInformation.OSArchitecture.ToString().ToLowerInvariant()
-                },
+                Architecture = GetOperatingSystemArchitecture(),
                 Hostname = Environment.MachineName,
                 Uptime = (int)Environment.TickCount64 / 1000
             };
 
-            logger.Debug(
+            logger.Info(
                 MyOperation.GetSystemInfo,
                 OperationStatus.Success,
                 new LogInfo(MyLogInfoKey.OperatingSystem, systemInfo.OperatingSystem),
@@ -43,6 +38,58 @@ namespace SystemInfoApi.Service
             return systemInfo;
         }
 
+        public NetworkInfo GetNetworkInfo()
+        {
+            logger.Info(
+                MyOperation.GetNetworkInfo,
+                OperationStatus.Started);
+
+            NetworkInfo networkInfo = new()
+            {
+                PublicIpAddress = NetworkUtils.GetPublicIpAddress(),
+                Hostname = Environment.MachineName
+            };
+
+            logger.Info(
+                MyOperation.GetNetworkInfo,
+                OperationStatus.Success,
+                new LogInfo(MyLogInfoKey.PublicIpAddress, networkInfo.PublicIpAddress),
+                new LogInfo(MyLogInfoKey.Hostname, networkInfo.Hostname));
+
+            return networkInfo;
+        }
+
+        public RegionInfo GetRegionInfo()
+        {
+            logger.Info(
+                MyOperation.GetRegionInfo,
+                OperationStatus.Started);
+
+            RegionInfo regionInfo = new()
+            {
+                SystemTime = DateTimeOffset.Now.ToString("o"),
+                TimeZone = TimeZoneInfo.Local.ToString()
+            };
+
+            logger.Info(
+                MyOperation.GetRegionInfo,
+                OperationStatus.Success,
+                new LogInfo(MyLogInfoKey.SystemTime, regionInfo.SystemTime),
+                new LogInfo(MyLogInfoKey.TimeZone, regionInfo.TimeZone));
+
+            return regionInfo;
+        }
+
+        static string GetOperatingSystemArchitecture()
+            => RuntimeInformation.OSArchitecture switch
+            {
+                Architecture.X64 => "x64",
+                Architecture.X86 => "x86",
+                Architecture.Arm64 => "arm64",
+                Architecture.Arm => "arm",
+                _ => RuntimeInformation.OSArchitecture.ToString().ToLowerInvariant()
+            };
+
         static string GetOperatingSystemName()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -51,13 +98,10 @@ namespace SystemInfoApi.Service
 
                 if (File.Exists(osReleasePath))
                 {
-                    foreach (string line in File.ReadLines(osReleasePath))
+                    foreach (string line in File
+                        .ReadLines(osReleasePath)
+                        .Where(line => line.StartsWith("PRETTY_NAME=", StringComparison.Ordinal)))
                     {
-                        if (!line.StartsWith("PRETTY_NAME=", StringComparison.Ordinal))
-                        {
-                            continue;
-                        }
-
                         string prettyName = line["PRETTY_NAME=".Length..].Trim().Trim('"');
 
                         if (!string.IsNullOrWhiteSpace(prettyName))

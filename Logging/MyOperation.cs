@@ -6,6 +6,8 @@ namespace SystemInfoApi.Logging
     {
         MyOperation(string name) : base(name) { }
 
+        public static Operation GetRegionInfo => new MyOperation(nameof(GetRegionInfo));
         public static Operation GetSystemInfo => new MyOperation(nameof(GetSystemInfo));
+        public static Operation GetNetworkInfo => new MyOperation(nameof(GetNetworkInfo));
     }
 }
