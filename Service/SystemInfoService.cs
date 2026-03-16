@@ -59,25 +59,25 @@ namespace SystemInfoApi.Service
             return networkInfo;
         }
 
-        public RegionInfo GetRegionInfo()
+        public RegionalInfo GetRegionalInfo()
         {
             logger.Info(
-                MyOperation.GetRegionInfo,
+                MyOperation.GetRegionalInfo,
                 OperationStatus.Started);
 
-            RegionInfo regionInfo = new()
+            RegionalInfo regionalInfo = new()
             {
                 SystemTime = DateTimeOffset.Now.ToString("o"),
                 TimeZone = TimeZoneInfo.Local.ToString()
             };
 
             logger.Info(
-                MyOperation.GetRegionInfo,
+                MyOperation.GetRegionalInfo,
                 OperationStatus.Success,
-                new LogInfo(MyLogInfoKey.SystemTime, regionInfo.SystemTime),
-                new LogInfo(MyLogInfoKey.TimeZone, regionInfo.TimeZone));
+                new LogInfo(MyLogInfoKey.SystemTime, regionalInfo.SystemTime),
+                new LogInfo(MyLogInfoKey.TimeZone, regionalInfo.TimeZone));
 
-            return regionInfo;
+            return regionalInfo;
         }
 
         static string GetOperatingSystemArchitecture()

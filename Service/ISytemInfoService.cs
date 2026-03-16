@@ -8,6 +8,6 @@ namespace SystemInfoApi.Service
 
         NetworkInfo GetNetworkInfo();
 
-        RegionInfo GetRegionInfo();
+        RegionalInfo GetRegionalInfo();
     }
 }

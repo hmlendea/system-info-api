@@ -1,6 +1,6 @@
 namespace SystemInfoApi.Service.Models
 {
-    public sealed class RegionInfo
+    public sealed class RegionalInfo
     {
         public string SystemTime { get; set; }
 
