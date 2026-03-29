@@ -2,6 +2,8 @@
 
 # System Info API
 
+## About
+
 Simple ASP.NET Core REST API that exposes basic information about the host machine.
 
 The service currently returns three categories of data:
@@ -25,7 +27,7 @@ This project is intended for lightweight infrastructure tooling, status dashboar
 
 ## Technology Stack
 
-- .NET 10
+- .NET 10.0
 - ASP.NET Core Web API
 - `NuciAPI`
 - `NuciAPI.Controllers`
@@ -175,7 +177,7 @@ Using environment variables or a secrets manager is preferable to storing real s
 
 ### Prerequisites
 
-- .NET 10 SDK
+- .NET 10.0 SDK
 
 ### Restore Dependencies
 
@@ -199,19 +201,13 @@ dotnet build
 
 ### Publish the Project
 
-```bash
-dotnet publish -c Release
-```
-
-## Deployment
-
 The repository includes a helper script:
 
 ```bash
-./release.sh
+./release.sh 1.2.3
 ```
 
-The script downloads and executes an external deployment script for .NET 10 releases.
+The script downloads and executes an external deployment script for .NET 10.0 releases.
 
 Before using it in production, review the referenced script and make sure that executing a remote script matches your deployment policy.
 
@@ -268,6 +264,10 @@ Important middleware enabled in startup:
 - replay protection
 - authorization
 
+## Target Framework
+
+The current package targets `.NET 10.0`.
+
 ## License
 
-This project is licensed under the GNU General Public License v3.0. See `LICENSE` for the full text.
+This project is licensed under the `GNU General Public License v3.0` or later. See [LICENSE](./LICENSE) for details.
