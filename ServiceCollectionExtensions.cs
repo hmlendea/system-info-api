@@ -11,20 +11,18 @@ namespace SystemInfoApi
     public static class ServiceCollectionExtensions
     {
         static SecuritySettings securitySettings;
-        static NuciLoggerSettings loggingSettings;
 
         public static IServiceCollection AddConfigurations(
             this IServiceCollection services,
             IConfiguration configuration)
         {
             securitySettings = new SecuritySettings();
-            loggingSettings = new NuciLoggerSettings();
 
             configuration.Bind(nameof(SecuritySettings), securitySettings);
-            configuration.Bind(nameof(NuciLoggerSettings), loggingSettings);
 
-            services.AddSingleton(securitySettings);
-            services.AddSingleton(loggingSettings);
+            services
+                .AddNuciLoggerSettings(configuration)
+                .AddSingleton(securitySettings);
 
             return services;
         }
